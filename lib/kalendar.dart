@@ -2,7 +2,6 @@ library kalendar;
 
 import 'package:flutter/material.dart';
 import 'package:date_utils/date_utils.dart';
-import 'package:intl/intl.dart';
 
 class Kalendar extends StatefulWidget {
   final Map<String, List<String>> markedDates;
@@ -103,7 +102,7 @@ class _KalendarState extends State<Kalendar> {
         ? widget.weekBuilder(Utils.weekdays)
         : Container(
           padding: EdgeInsets.only(bottom: 12),
-          child: Row(            
+          child: Row(
             children: List.generate(Utils.weekdays.length, (index) {
               return Expanded(
                 child: Text(
@@ -134,13 +133,13 @@ class _KalendarState extends State<Kalendar> {
                           isDayOfCurrentMonth:
                               days[index].month == _visibleMonth.month,
                           events: widget.markedDates[
-                              DateFormat('y-M-d').format(days[index])],
+                              formatDate(days[index])],
                           markBuilder: widget.markBuilder,
                           borderRadius: widget.borderRadius,
                           dayTileMargin: widget.dayTileMargin,
                           onTap: widget.onTap,
                           isSelected: widget.selectedDates[
-                                  DateFormat('y-M-d').format(days[index])] ??
+                                  formatDate(days[index])] ??
                               false,
                           dayTileBorderColor: widget.dayTileBorderColor,
                           dayTileBuilder: widget.dayTileBuilder,
@@ -155,6 +154,10 @@ class _KalendarState extends State<Kalendar> {
       ],
     );
   }
+}
+
+String formatDate(DateTime date) {
+  return '${date.year}-${date.month}-${date.day}';
 }
 
 class DayTileContainer extends StatelessWidget {
@@ -193,7 +196,7 @@ class DayTileContainer extends StatelessWidget {
       events: events,
       markBuilder: markBuilder,
       borderRadius: borderRadius,
-      dayTileMargin: dayTileMargin,    
+      dayTileMargin: dayTileMargin,
       isSelected: isSelected,
       dayTileBorderColor: dayTileBorderColor,
       showBorder: showBorder,
@@ -250,7 +253,7 @@ class DayTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-          margin: EdgeInsets.all(props.dayTileMargin ?? 3),          
+          margin: EdgeInsets.all(props.dayTileMargin ?? 3),
           decoration: BoxDecoration(
             border: props.showBorder == true
               ? Border.all(
