@@ -132,15 +132,19 @@ class _KalendarState extends State<Kalendar> {
                           dateTime: days[index],
                           isDayOfCurrentMonth:
                               days[index].month == _visibleMonth.month,
-                          events: widget.markedDates[
-                              formatDate(days[index])],
+                          events: widget.markedDates != null
+                            ? widget.markedDates[
+                              formatDate(days[index])]
+                            : null,
                           markBuilder: widget.markBuilder,
                           borderRadius: widget.borderRadius,
                           dayTileMargin: widget.dayTileMargin,
                           onTap: widget.onTap,
-                          isSelected: widget.selectedDates[
+                          isSelected: widget.selectedDates != null
+                            ? widget.selectedDates[
                                   formatDate(days[index])] ??
-                              false,
+                              false
+                            : false,
                           dayTileBorderColor: widget.dayTileBorderColor,
                           dayTileBuilder: widget.dayTileBuilder,
                           showBorder: widget.showBorder,
@@ -157,7 +161,9 @@ class _KalendarState extends State<Kalendar> {
 }
 
 String formatDate(DateTime date) {
-  return '${date.year}-${date.month}-${date.day}';
+  String day = date.day.toString().padLeft(2, '0');
+  String month = date.month.toString().padLeft(2, '0');
+  return '${date.year}-$month-$day';
 }
 
 class DayTileContainer extends StatelessWidget {
@@ -297,7 +303,14 @@ class EventMarks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (events == null || events.length == 0) {
+
+    if (events == null) {
+      print('EVENTS IS NULL');
+      return Container();
+    }
+
+    if (events.length == 0) {
+      print('EVENTS LENGTH IS ZERO');
       return Container();
     }
 
@@ -307,11 +320,8 @@ class EventMarks extends StatelessWidget {
         if (this.markBuilder != null) {
           return this.markBuilder(events[index]);
         }
-        if (events[index] == 'Hello') {
-          return EventMark(Colors.green);
-        } else {
-          return EventMark(Colors.red);
-        }
+
+        return EventMark(Colors.green);
       }),
     );
   }
