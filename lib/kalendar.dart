@@ -121,7 +121,7 @@ class _KalendarState extends State<Kalendar> {
             itemBuilder: (context, pageIndex) {
               List<DateTime> days = Utils.daysInMonth(_visibleMonth);
               return GridView.builder(
-                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(                    
                       crossAxisCount: 7),
                   itemCount: days.length,
                   itemBuilder: (context, index) {
@@ -189,6 +189,7 @@ class DayTileContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     DayProps dayProps = DayProps(
       dateTime: dateTime,
+      onTap: onTap,
       isDayOfCurrentMonth: isDayOfCurrentMonth,
       events: events,
       markBuilder: markBuilder,
@@ -202,7 +203,9 @@ class DayTileContainer extends StatelessWidget {
     return Expanded(
       child: GestureDetector(
           onTap: () {
-            onTap(dateTime, !isSelected);
+            if (onTap != null) {
+              onTap(dateTime, !isSelected); 
+            }            
           },
           onLongPress: () {},
           child: Container(
@@ -261,7 +264,7 @@ class _DayTile extends StatelessWidget {
               : null,
           borderRadius: BorderRadius.circular(props.borderRadius),
           color: props.isSelected
-              ? Colors.green
+              ? Theme.of(context).primaryColor
               : props.isToday
                   ? Theme.of(context).primaryColorLight
                   : Colors.transparent),
@@ -299,13 +302,11 @@ class EventMarks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (events == null) {
-      print('EVENTS IS NULL');
+    if (events == null) {      
       return Container();
     }
 
-    if (events.length == 0) {
-      print('EVENTS LENGTH IS ZERO');
+    if (events.length == 0) {      
       return Container();
     }
 
@@ -316,16 +317,16 @@ class EventMarks extends StatelessWidget {
           return this.markBuilder(events[index]);
         }
 
-        return EventMark(Colors.green);
+        return _EventMark(Colors.black);
       }),
     );
   }
 }
 
-class EventMark extends StatelessWidget {
+class _EventMark extends StatelessWidget {
   final Color color;
 
-  EventMark(this.color);
+  _EventMark(this.color);
 
   @override
   Widget build(BuildContext context) {

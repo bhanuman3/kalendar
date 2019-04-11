@@ -1,4 +1,5 @@
 import 'package:example/calendar_with_border.dart';
+import 'package:example/calendar_with_multi_select.dart';
 import 'package:example/simple_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -45,7 +46,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Kalendar Demo'),
       ),
-      body: CalendarWithBorder()
+      body: CalendarWithMultiSelect()
     );
   }
 }
