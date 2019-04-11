@@ -137,7 +137,7 @@ class _KalendarState extends State<Kalendar> {
                               formatDate(days[index])]
                             : null,
                           markBuilder: widget.markBuilder,
-                          borderRadius: widget.borderRadius,
+                          borderRadius: widget.borderRadius ?? 4,
                           dayTileMargin: widget.dayTileMargin,
                           onTap: widget.onTap,
                           isSelected: widget.selectedDates != null
@@ -158,12 +158,6 @@ class _KalendarState extends State<Kalendar> {
       ],
     );
   }
-}
-
-String formatDate(DateTime date) {
-  String day = date.day.toString().padLeft(2, '0');
-  String month = date.month.toString().padLeft(2, '0');
-  return '${date.year}-$month-$day';
 }
 
 class DayTileContainer extends StatelessWidget {
@@ -344,4 +338,10 @@ class EventMark extends StatelessWidget {
       ),
     );
   }
+}
+
+String formatDate(DateTime date) {
+  String day = date.day.toString().padLeft(2, '0');
+  String month = date.month.toString().padLeft(2, '0');
+  return '${date.year}-$month-$day';
 }

@@ -1,3 +1,5 @@
+import 'package:example/calendar_with_border.dart';
+import 'package:example/simple_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kalendar/kalendar.dart';
@@ -43,56 +45,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Kalendar Demo'),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 4),
-        child: Center(
-          child: Kalendar(
-            markedDates: _events,
-            markBuilder: (String event) {
-              if (event == 'Hello') {
-                return Text('1L', style: Theme.of(context).textTheme.caption);
-              }
-            },
-            borderRadius: 8,
-            showBorder: true,
-            selectedDates: _selectedDates,
-            onTap: (DateTime date, isSelected) {
-              debugPrint(date.toIso8601String());
-              if (isSelected) {
-                _selectedDates[DateFormat('y-M-d').format(date)] = isSelected;
-              } else {
-                _selectedDates.remove(DateFormat('y-M-d').format(date));
-              }
-
-              setState(() {});
-              print(_selectedDates);
-            },
-            weekBuilder: (weekdays) {
-              return Container(
-                padding: EdgeInsets.only(bottom: 8),
-                child: Row(
-                  children: List.generate(weekdays.length, (index) {
-                    return Expanded(
-                      child: Text(
-                        '${weekdays[index]}',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              );
-            },
-            dayTileMargin: 3,
-        dayTileBuilder: (props) {
-          return CustomDayTile(props);
-        },
-          ),
-        ),
-      ),
+      body: CalendarWithBorder()
     );
   }
 }
@@ -141,5 +94,3 @@ class CustomDayTile extends StatelessWidget {
     );
   }
 }
-
-
