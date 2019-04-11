@@ -99,21 +99,21 @@ class _KalendarState extends State<Kalendar> {
           ),
         ),
         widget.weekBuilder != null
-        ? widget.weekBuilder(Utils.weekdays)
-        : Container(
-          padding: EdgeInsets.only(bottom: 12),
-          child: Row(
-            children: List.generate(Utils.weekdays.length, (index) {
-              return Expanded(
-                child: Text(
-                  '${Utils.weekdays[index]}',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.red),
+            ? widget.weekBuilder(Utils.weekdays)
+            : Container(
+                padding: EdgeInsets.only(bottom: 12),
+                child: Row(
+                  children: List.generate(Utils.weekdays.length, (index) {
+                    return Expanded(
+                      child: Text(
+                        '${Utils.weekdays[index]}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    );
+                  }),
                 ),
-              );
-            }),
-          ),
-        ),
+              ),
         Expanded(
           child: PageView.builder(
             controller: _pageController,
@@ -133,18 +133,16 @@ class _KalendarState extends State<Kalendar> {
                           isDayOfCurrentMonth:
                               days[index].month == _visibleMonth.month,
                           events: widget.markedDates != null
-                            ? widget.markedDates[
-                              formatDate(days[index])]
-                            : null,
+                              ? widget.markedDates[formatDate(days[index])]
+                              : null,
                           markBuilder: widget.markBuilder,
                           borderRadius: widget.borderRadius ?? 4,
                           dayTileMargin: widget.dayTileMargin,
                           onTap: widget.onTap,
                           isSelected: widget.selectedDates != null
-                            ? widget.selectedDates[
-                                  formatDate(days[index])] ??
-                              false
-                            : false,
+                              ? widget.selectedDates[formatDate(days[index])] ??
+                                  false
+                              : false,
                           dayTileBorderColor: widget.dayTileBorderColor,
                           dayTileBuilder: widget.dayTileBuilder,
                           showBorder: widget.showBorder,
@@ -161,7 +159,6 @@ class _KalendarState extends State<Kalendar> {
 }
 
 class DayTileContainer extends StatelessWidget {
-
   final DateTime dateTime;
   final bool isDayOfCurrentMonth;
   final List<String> events;
@@ -200,20 +197,20 @@ class DayTileContainer extends StatelessWidget {
       isSelected: isSelected,
       dayTileBorderColor: dayTileBorderColor,
       showBorder: showBorder,
+      isToday: formatDate(dateTime) == formatDate(DateTime.now()),
     );
     return Expanded(
       child: GestureDetector(
-        onTap: () {
-          onTap(dateTime, !isSelected);
-        },
-        onLongPress: () {},
-        child: Container(
-          width: double.infinity,
-          child: dayTileBuilder != null
-          ? dayTileBuilder(dayProps)
-          : DayTile(dayProps),
-        )
-      ),
+          onTap: () {
+            onTap(dateTime, !isSelected);
+          },
+          onLongPress: () {},
+          child: Container(
+            width: double.infinity,
+            child: dayTileBuilder != null
+                ? dayTileBuilder(dayProps)
+                : _DayTile(dayProps),
+          )),
     );
   }
 }
@@ -229,6 +226,7 @@ class DayProps {
   final bool isSelected;
   final Color dayTileBorderColor;
   final bool showBorder;
+  final bool isToday;
 
   DayProps({
     this.dateTime,
@@ -241,51 +239,55 @@ class DayProps {
     this.isSelected,
     this.dayTileBorderColor,
     this.showBorder,
+    this.isToday,
   });
 }
 
-
-class DayTile extends StatelessWidget {
+class _DayTile extends StatelessWidget {
   final DayProps props;
 
-  DayTile(this.props);
+  _DayTile(this.props);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-          margin: EdgeInsets.all(props.dayTileMargin ?? 3),
-          decoration: BoxDecoration(
-            border: props.showBorder == true
+      margin: EdgeInsets.all(props.dayTileMargin ?? 3),
+      decoration: BoxDecoration(
+          border: props.showBorder == true
               ? Border.all(
-              width: 1,
-              color: props.dayTileBorderColor ?? Colors.grey,
-            )
-            : null,
-            borderRadius: BorderRadius.circular(props.borderRadius),
-            color: props.isSelected ? Colors.green : Colors.transparent,
-          ),
-          child: Stack(
+                  width: 1,
+                  color: props.dayTileBorderColor ?? Colors.grey,
+                )
+              : null,
+          borderRadius: BorderRadius.circular(props.borderRadius),
+          color: props.isSelected
+              ? Colors.green
+              : props.isToday
+                  ? Theme.of(context).primaryColorLight
+                  : Colors.transparent),
+      child: Stack(
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Text(
-                    '${props.dateTime.day}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color:
-                            props.isDayOfCurrentMonth ? Colors.black87 : Colors.grey),
-                  ),
-                ],
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: EventMarks(props.events, markBuilder: props.markBuilder),
+              Text(
+                '${props.dateTime.day}',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: props.isDayOfCurrentMonth
+                        ? Colors.black87
+                        : Colors.grey),
               ),
             ],
           ),
-        );
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: EventMarks(props.events, markBuilder: props.markBuilder),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -297,7 +299,6 @@ class EventMarks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     if (events == null) {
       print('EVENTS IS NULL');
       return Container();
