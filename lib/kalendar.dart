@@ -9,11 +9,12 @@ class Kalendar extends StatefulWidget {
   final double borderRadius;
   final double dayTileMargin;
   final Function onTap;
-  final Map<String, bool> selectedDates;
+  final Set<String> selectedDates;
   final Color dayTileBorderColor;
   final Function dayTileBuilder;
   final Function weekBuilder;
   final bool showBorder;
+  final Function headerBuilder;
 
   Kalendar({
     this.markedDates,
@@ -26,6 +27,7 @@ class Kalendar extends StatefulWidget {
     this.dayTileBuilder,
     this.weekBuilder,
     this.showBorder,
+    this.headerBuilder,
   });
 
   @override
@@ -56,48 +58,21 @@ class _KalendarState extends State<Kalendar> {
     _pageController = PageController(initialPage: _currentPageIndex);
   }
 
+  void _changeMonth(date) {
+    setState(() {
+      _visibleMonth = date;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.chevron_left,
-                  color: Theme.of(context).primaryColor,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _visibleMonth = Utils.previousMonth(_visibleMonth);
-                  });
-                },
-              ),
-              Text(
-                '${Utils.formatMonth(_visibleMonth)}',
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.chevron_right,
-                  color: Theme.of(context).primaryColor,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _visibleMonth = Utils.nextMonth(_visibleMonth);
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
+        widget.headerBuilder != null
+            ? widget.headerBuilder(_visibleMonth, _changeMonth)
+            : _DefaultHeader(_visibleMonth, onChange: (date) {
+                _changeMonth(date);
+              }),
         widget.weekBuilder != null
             ? widget.weekBuilder(Utils.weekdays)
             : Container(
@@ -121,7 +96,7 @@ class _KalendarState extends State<Kalendar> {
             itemBuilder: (context, pageIndex) {
               List<DateTime> days = Utils.daysInMonth(_visibleMonth);
               return GridView.builder(
-                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(                    
+                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 7),
                   itemCount: days.length,
                   itemBuilder: (context, index) {
@@ -140,7 +115,8 @@ class _KalendarState extends State<Kalendar> {
                           dayTileMargin: widget.dayTileMargin,
                           onTap: widget.onTap,
                           isSelected: widget.selectedDates != null
-                              ? widget.selectedDates[formatDate(days[index])] ??
+                              ? widget.selectedDates
+                                      .contains(formatDate(days[index])) ??
                                   false
                               : false,
                           dayTileBorderColor: widget.dayTileBorderColor,
@@ -154,6 +130,52 @@ class _KalendarState extends State<Kalendar> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _DefaultHeader extends StatelessWidget {
+  final DateTime visibleMonth;
+  final Function onChange;
+
+  _DefaultHeader(this.visibleMonth, {this.onChange});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.chevron_left,
+              color: Theme.of(context).primaryColor,
+            ),
+            onPressed: () {
+              onChange(Utils.previousMonth(visibleMonth));
+            },
+          ),
+          Text(
+            '${Utils.formatMonth(visibleMonth)}',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.chevron_right,
+              color: Theme.of(context).primaryColor,
+            ),
+            onPressed: () {
+              onChange(Utils.nextMonth(visibleMonth));
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -204,8 +226,8 @@ class DayTileContainer extends StatelessWidget {
       child: GestureDetector(
           onTap: () {
             if (onTap != null) {
-              onTap(dateTime, !isSelected); 
-            }            
+              onTap(dateTime, !isSelected);
+            }
           },
           onLongPress: () {},
           child: Container(
@@ -302,11 +324,11 @@ class EventMarks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (events == null) {      
+    if (events == null) {
       return Container();
     }
 
-    if (events.length == 0) {      
+    if (events.length == 0) {
       return Container();
     }
 

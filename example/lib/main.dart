@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Kalendar Demo'),
       ),
-      body: CalendarWithMultiSelect()
+      body: SimpleCalendar()
     );
   }
 }

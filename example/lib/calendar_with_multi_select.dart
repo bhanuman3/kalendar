@@ -10,8 +10,7 @@ class CalendarWithMultiSelect extends StatefulWidget {
 }
 
 class _CalendarWithMultiSelectState extends State<CalendarWithMultiSelect> {
-  final _selectedDates = HashMap<String, bool>();
-  final _selectedDatesSet = HashSet<String>();
+  final _selectedDates = HashSet<String>();  
   Map<String, List<String>> _markedDates;
 
   @override
@@ -19,7 +18,7 @@ class _CalendarWithMultiSelectState extends State<CalendarWithMultiSelect> {
     super.initState();
     _markedDates = {
       '2019-04-10': [
-        'hello'
+        'event1'
       ]
     };
   }
@@ -38,12 +37,11 @@ class _CalendarWithMultiSelectState extends State<CalendarWithMultiSelect> {
               onTap: (DateTime dateTime, bool isSelected) {
                 debugPrint(dateTime.toIso8601String());
                 debugPrint('$isSelected');
-                setState(() {
-                  _selectedDates[formatDate(dateTime)] = isSelected;
+                setState(() {                  
                   if (isSelected) {
-                    _selectedDatesSet.add(formatDate(dateTime));
+                    _selectedDates.add(formatDate(dateTime));
                   } else {
-                    _selectedDatesSet.remove(formatDate(dateTime));
+                    _selectedDates.remove(formatDate(dateTime));
                   }
                 });
               },
@@ -53,29 +51,43 @@ class _CalendarWithMultiSelectState extends State<CalendarWithMultiSelect> {
           ),
 
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,            
             children: <Widget>[
               RaisedButton(                                
                 onPressed: () {
-                  _selectedDatesSet.forEach((date) {
+                  _selectedDates.forEach((date) {
                     if (_markedDates[date] == null) {
                       _markedDates[date] = [];
                     }
 
-                    _markedDates[date].add('red');
+                    _markedDates[date].add('event1');
                   });
 
                   setState(() {});
                 },
                 child: Text('Mark selected dated'),
-              ),              
+              ),
+              RaisedButton(                                
+                onPressed: () {
+                  _selectedDates.forEach((date) {
+                    if (_markedDates[date] == null) {
+                      _markedDates[date] = [];
+                    }
+
+                    _markedDates[date].remove('event1');
+                  });
+
+                  setState(() {});
+                },
+                child: Text('Unmark selected dated'),
+              ),
             ],
           ),
 
           Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-              child: Text(_selectedDatesSet.toString()),
+              child: Text(_selectedDates.toString()),
             ),
           )
           // Text('Hello')
