@@ -3,18 +3,25 @@ library kalendar;
 import 'package:flutter/material.dart';
 import 'package:date_utils/date_utils.dart';
 
+typedef ValueChanged<T> = void Function(T);
+typedef MarkBuilder = Widget Function(String event);
+typedef OnTappedOnDayTile = Widget Function(DateTime dateTime, bool isSelected);
+typedef HeaderBuilder = Widget Function(DateTime dateTime, ValueChanged<DateTime> changedDateTime);
+typedef DayTileBuilder = Widget Function(DayProps dayProps);
+typedef WeekBuilder = Widget Function(List<String> weeks);
+
 class Kalendar extends StatefulWidget {
   final Map<String, List<String>> markedDates;
-  final Function markBuilder;
+  final MarkBuilder markBuilder;
   final double borderRadius;
   final double dayTileMargin;
-  final Function onTap;
+  final OnTappedOnDayTile onTap;
   final Set<String> selectedDates;
   final Color dayTileBorderColor;
-  final Function dayTileBuilder;
-  final Function weekBuilder;
+  final DayTileBuilder dayTileBuilder;
+  final WeekBuilder weekBuilder;
   final bool showBorder;
-  final Function headerBuilder;
+  final HeaderBuilder headerBuilder;
 
   Kalendar({
     this.markedDates,

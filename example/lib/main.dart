@@ -1,10 +1,6 @@
-import 'package:example/calendar_with_border.dart';
-import 'package:example/calendar_with_multi_select.dart';
 import 'package:example/customized_calendar.dart';
-import 'package:example/simple_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kalendar/kalendar.dart';
 
 void main() => runApp(MyApp());
 

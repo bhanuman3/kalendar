@@ -13,22 +13,7 @@ class _CustomizedCalendarState extends State<CustomizedCalendar> {
   final _selectedDates = HashSet<String>();
 
   @override
-  void initState() {
-    super.initState();
-    _events = {
-      // '2019-04-17': ['Wedding'],
-      // '2019-04-19': ['Dentist'],
-      // '2019-04-09': ['Tennis'],
-      // '2019-04-05': ['Interview'],
-      // '2019-04-29': ['Holiday'],
-      // '2019-04-03': ['Blackday'],
-    };
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    
-
+  Widget build(BuildContext context) {  
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 4),
       child: Column(
@@ -56,7 +41,7 @@ class _CustomizedCalendarState extends State<CustomizedCalendar> {
             alignment: WrapAlignment.center,
             spacing: 16,            
             children: <Widget>[
-              RaisedButton(                                
+              RaisedButton(
                 onPressed: () {                  
                   _selectedDates.forEach((date) {
                     if (_events[date] == null) {

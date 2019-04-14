@@ -1,6 +1,6 @@
 name: kalendar
-description: A new Flutter package project.
-version: 0.0.1
+description: A horizontal swipable calendar made with flutter.
+version: 1.0.0
 author: Bhanu Manthry<manthrybhanu@gmail.com>
 homepage: https://github.com/bhanu-manthry/kalendar
 
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  date_utils: ^0.1.0+2
+  date_utils: ^1.0.0+3
 
 dev_dependencies:
   flutter_test:
