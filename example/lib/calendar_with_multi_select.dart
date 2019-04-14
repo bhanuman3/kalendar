@@ -10,7 +10,7 @@ class CalendarWithMultiSelect extends StatefulWidget {
 }
 
 class _CalendarWithMultiSelectState extends State<CalendarWithMultiSelect> {
-  final _selectedDates = HashSet<String>();  
+  final _selectedDates = HashSet<String>();
   Map<String, List<String>> _markedDates;
 
   @override
@@ -65,7 +65,7 @@ class _CalendarWithMultiSelectState extends State<CalendarWithMultiSelect> {
 
                   setState(() {});
                 },
-                child: Text('Mark selected dated'),
+                child: Text('Mark selected dates'),
               ),
               RaisedButton(                                
                 onPressed: () {
@@ -79,7 +79,7 @@ class _CalendarWithMultiSelectState extends State<CalendarWithMultiSelect> {
 
                   setState(() {});
                 },
-                child: Text('Unmark selected dated'),
+                child: Text('Unmark selected dates'),
               ),
             ],
           ),

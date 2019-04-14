@@ -95,10 +95,10 @@ class _KalendarState extends State<Kalendar> {
             onPageChanged: _onPageChanged,
             itemBuilder: (context, pageIndex) {
               List<DateTime> days = Utils.daysInMonth(_visibleMonth);
-              return GridView.builder(
+              return GridView.builder(                
                   gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 7),
-                  itemCount: days.length,
+                  itemCount: days.length,                  
                   itemBuilder: (context, index) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -308,7 +308,7 @@ class _DayTile extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: EventMarks(props.events, markBuilder: props.markBuilder),
+            child: _EventMarks(props.events, markBuilder: props.markBuilder),
           ),
         ],
       ),
@@ -316,11 +316,11 @@ class _DayTile extends StatelessWidget {
   }
 }
 
-class EventMarks extends StatelessWidget {
+class _EventMarks extends StatelessWidget {
   final List<String> events;
   final Function markBuilder;
 
-  EventMarks(this.events, {this.markBuilder});
+  _EventMarks(this.events, {this.markBuilder});
 
   @override
   Widget build(BuildContext context) {
