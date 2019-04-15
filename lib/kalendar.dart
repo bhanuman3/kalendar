@@ -6,7 +6,8 @@ import 'package:date_utils/date_utils.dart';
 typedef ValueChanged<T> = void Function(T);
 typedef MarkBuilder = Widget Function(String event);
 typedef OnTappedOnDayTile = Widget Function(DateTime dateTime, bool isSelected);
-typedef HeaderBuilder = Widget Function(DateTime dateTime, ValueChanged<DateTime> changedDateTime);
+typedef HeaderBuilder = Widget Function(
+    DateTime dateTime, ValueChanged<DateTime> changedDateTime);
 typedef DayTileBuilder = Widget Function(DayProps dayProps);
 typedef WeekBuilder = Widget Function(List<String> weeks);
 
@@ -102,10 +103,10 @@ class _KalendarState extends State<Kalendar> {
             onPageChanged: _onPageChanged,
             itemBuilder: (context, pageIndex) {
               List<DateTime> days = Utils.daysInMonth(_visibleMonth);
-              return GridView.builder(                
+              return GridView.builder(
                   gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 7),
-                  itemCount: days.length,                  
+                  itemCount: days.length,
                   itemBuilder: (context, index) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
