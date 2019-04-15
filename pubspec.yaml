@@ -1,6 +1,6 @@
 name: kalendar
-description: A highly customizable calendar widget for flutter.
-version: 1.0.1
+description: A highly customizable calendar widget for flutter. With Kalendar you can select dates, mark events on dates, build your own custom day tiles, header and week row with available builders.
+version: 1.0.2
 author: Bhanu Manthry<manthrybhanu@gmail.com>
 homepage: https://github.com/bhanu-manthry/kalendar
 
